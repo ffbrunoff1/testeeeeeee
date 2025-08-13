@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { Menu, X, Phone, Clock } from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { Menu, X, Phone, Clock } from 'lucide-react';
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const location = useLocation()
+  const { t, i18n } = useTranslation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,13 +34,18 @@ export default function Header() {
     setIsMenuOpen(false)
   }
 
+    const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setIsMenuOpen(false);
+  };
+
   const navigationItems = [
-    { name: 'Início', action: () => scrollToSection('hero') },
-    { name: 'Sobre', action: () => scrollToSection('about') },
-    { name: 'Cardápio', path: '/cardapio' },
-    { name: 'Reservas', path: '/reservas' },
-    { name: 'Contato', action: () => scrollToSection('contact') }
-  ]
+    { name: t('navHome'), action: () => scrollToSection('hero') },
+    { name: t('navAbout'), action: () => scrollToSection('about') },
+    { name: t('navMenu'), path: '/menu' },
+    { name: t('navReservations'), path: '/reservations' },
+    { name: t('navContact'), action: () => scrollToSection('contact') }
+  ];
 
   return (
     <motion.header
@@ -63,7 +70,7 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6">
             {navigationItems.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -92,6 +99,11 @@ export default function Header() {
                 )}
               </motion.div>
             ))}
+            <div className="flex items-center space-x-2 border-l border-gray-300 pl-6">
+              <button onClick={() => changeLanguage('pt')} className={`font-semibold text-sm transition-colors ${i18n.language.startsWith('pt') ? 'text-wine-600' : 'text-gray-500 hover:text-gray-800'}`}>PT</button>
+              <span className={`text-gray-300 ${isScrolled ? 'text-gray-400' : 'text-gray-400'}`}>|</span>
+              <button onClick={() => changeLanguage('en')} className={`font-semibold text-sm transition-colors ${i18n.language === 'en' ? 'text-wine-600' : 'text-gray-500 hover:text-gray-800'}`}>EN</button>
+            </div>
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
@@ -127,7 +139,7 @@ export default function Header() {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden bg-white border-t border-gray-200"
           >
-            <div className="py-4 space-y-4">
+            <div className="py-4 space-y-2">
               {navigationItems.map((item) => (
                 <div key={item.name}>
                   {item.path ? (

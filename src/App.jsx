@@ -26,9 +26,9 @@ export default function App() {
             </>
           }
         />
-        <Route path="/cardapio" element={<Menu />} />
-        <Route path="/cardapio/:categoria" element={<MenuCategory />} />
-        <Route path="/reservas" element={<Reservations />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/menu/:categoria" element={<MenuCategory />} />
+        <Route path="/reservations" element={<Reservations />} />
       </Routes>
       <Footer />
     </div>
